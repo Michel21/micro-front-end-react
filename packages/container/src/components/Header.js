@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link as RouterLink } from 'react-router-dom';
+import { Context } from '../ContextApi/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
@@ -54,15 +55,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header({ isSignedIn, onSignOut }) {
+export default function Header() {
   const classes = useStyles();
+  const {authenticated, handleLogout } = useContext(Context);
+  // const [isSigned, setIsSigned] = useState(true);
+  
+  // const signOut = () => {
+  //   localStorage.removeItem('@Mfe:token');
+  //   localStorage.removeItem('@Mfe:user');
+  //   setIsSigned(false);
+  // };
 
-  const onClick = () => {
-    if (isSignedIn && onSignOut) {
-      onSignOut();
-    }
-  };
-
+  // useEffect(() => {
+  //   // setIsSigned(true);
+  //   console.log(authenticated);
+  // }, [])
+  console.log(authenticated);
   return (
     <React.Fragment>
       <AppBar
@@ -81,16 +89,39 @@ export default function Header({ isSignedIn, onSignOut }) {
           >
             App
           </Typography>
-          <Button
+          {authenticated && (
+            <Typography 
+              variant="h6"
+              color="inherit"
+              noWrap
+              component={RouterLink}
+              to="/dashboard"
+            >
+              dashboard 
+            </Typography>
+          )}
+          {!authenticated ? (
+            <Button
             color="primary"
             variant="outlined"
             className={classes.link}
             component={RouterLink}
-            to={isSignedIn ? '/' : '/auth/signin'}
-            onClick={onClick}
+            to='/auth/signin'
+           > Login
+             </Button>
+          ) : (
+            <Button
+            color="primary"
+            variant="outlined"
+            className={classes.link}
+            component={RouterLink}
+            to='/auth/signin'
+            onClick={handleLogout}
           >
-            {isSignedIn ? 'Logout' : 'Login'}
+            Logout
           </Button>
+          )
+         }
         </Toolbar>
       </AppBar>
     </React.Fragment>

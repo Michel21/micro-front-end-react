@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
+import api from '../../services/api';
 
 function Copyright() {
   return (
@@ -50,8 +51,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({ onSignIn }) {
+interface SignInFormData {
+  email: string;
+  password: string;
+}
+
+
+
+export default function SignIn({ onSignIn }: any) {
   const classes = useStyles();
+
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputPassword, setinputPassword] = useState('');
+
+  const user = { 
+    email: inputEmail,
+    password: inputPassword
+  }
+ 
+  const signIn = useCallback(
+    async ({ email, password }: SignInFormData) => {
+      try {
+        const response = await api.post('sessions', {
+          email,
+          password,
+        });
+
+        onSignIn();
+        
+        const { token, user } = response.data;
+    
+        localStorage.setItem('@Mfe:token', token);
+        localStorage.setItem('@Mfe:user', JSON.stringify(user));
+    
+        api.defaults.headers.authorization = `Bearer ${token}`;
+      } catch (error) {
+        console.log(error.message);
+      }
+  }, [onSignIn]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -76,6 +113,7 @@ export default function SignIn({ onSignIn }) {
             label="Email Address"
             name="email"
             autoComplete="email"
+            onChange={(event) => setInputEmail(event.target.value)}
             autoFocus
           />
           <TextField
@@ -87,6 +125,7 @@ export default function SignIn({ onSignIn }) {
             label="Password"
             type="password"
             id="password"
+            onChange={(event) => setinputPassword(event.target.value)}
             autoComplete="current-password"
           />
           <FormControlLabel
@@ -99,7 +138,8 @@ export default function SignIn({ onSignIn }) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={onSignIn}
+            // onClick={onSignIn}
+            onClick={() => signIn(user)}
           >
             Sign In
           </Button>
