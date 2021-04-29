@@ -45,6 +45,20 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  typography: {
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+  },
 }));
 
 export default function SignUp({ onSignIn }: any) {
@@ -56,7 +70,7 @@ export default function SignUp({ onSignIn }: any) {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" className={classes.typography}>
           Sign up
         </Typography>
         <form
@@ -111,7 +125,7 @@ export default function SignUp({ onSignIn }: any) {
                 autoComplete="current-password"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} className={classes.typography}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I want to receive inspiration, marketing promotions and updates via email."
@@ -128,7 +142,7 @@ export default function SignUp({ onSignIn }: any) {
           >
             Sign Up
           </Button>
-          <Grid container justify="flex-end">
+          <Grid container justify="flex-end" className={classes.typography}>
             <Grid item>
               <Link to="/auth/signin">Already have an account? Sign in</Link>
             </Grid>

@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { AuthProvider} from './ContextApi/AuthContext';
+import { TransactionProvider } from './hooks/useTransaction';
 
 import App from './App';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <AuthProvider>
+    <TransactionProvider>
       <App />
-    </AuthProvider>
-  </React.StrictMode>, 
+    </TransactionProvider>,
 document.querySelector('#root'));

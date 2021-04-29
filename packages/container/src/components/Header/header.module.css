@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: auto;
+}
+.content{
+  margin: 10px;
+}
+.navlink{
+  display: flex;
+  align-items: center;
+  width: 60%;
+}
+.link{
+  margin-right: 20px !important;
+}
+.avatar{
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+.avatar img{
+ width: 40px;
+ height: 40px;
+ border-radius: 50%;
+ margin-right: 10px;
+ border: 2px solid #ddd;
+}
+.users{
+  margin-top: 3px;
+  color: #555;
+  font-weight: 500;
+}
+.customer{
+ display: flex !important; 
+ flex-direction: column !important;
+ background-color: aqua;
+}
+.reset .normalize{
+  flex: 1;
+}
+.reset{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.fiuser{
+  margin-right: 5px;
+}

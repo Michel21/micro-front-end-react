@@ -12,7 +12,8 @@
     "isolatedModules": true,                 
     "allowSyntheticDefaultImports": true,        
     "esModuleInterop": true,                        
-    "skipLibCheck": true,                           
+    "skipLibCheck": true,    
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],                      
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]

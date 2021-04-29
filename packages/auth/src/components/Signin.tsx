@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -12,7 +12,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
-
+import Input from './Input/input';
+import useFrom from '../hooks/useForm';
+import { Snackbar, SnackbarContent } from '@material-ui/core';
+import style from '../global.module.css';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -49,6 +52,27 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  snackbar: {
+    background: '#2d816a',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+  },
+  typography: {
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+  },
 }));
 
 interface SignInFormData {
@@ -56,19 +80,36 @@ interface SignInFormData {
   password: string;
 }
 
-
+type Snackbar = {
+  text: any,
+  message: any,
+  open: any,
+}
 
 export default function SignIn({ onSignIn }: any) {
-  const classes = useStyles();
+  const styles = useStyles();
+  const [snackBar, setSnackBar] = useState<any>({text: "", message: "", open: false})
+  const [disabled, setDisabled] = useState<any>(true)
+  const inputEmail = useFrom('email')
+  const inputPassword = useFrom('password')
 
-  const [inputEmail, setInputEmail] = useState('');
-  const [inputPassword, setinputPassword] = useState('');
-
-  const user = { 
-    email: inputEmail,
-    password: inputPassword
+  const user = {
+    email: inputEmail.value,
+    password: inputPassword.value,
   }
- 
+
+  useEffect(() => {
+    if(inputEmail.validate() && inputPassword.validate()){
+      setDisabled(false);
+    }else{
+      setDisabled(true);
+    }
+  },[inputEmail,inputPassword])
+
+  function handleSubmit(event: any) {
+   event.preventDefault();
+  }
+
   const signIn = useCallback(
     async ({ email, password }: SignInFormData) => {
       try {
@@ -77,56 +118,51 @@ export default function SignIn({ onSignIn }: any) {
           password,
         });
 
-        onSignIn();
-        
         const { token, user } = response.data;
-    
         localStorage.setItem('@Mfe:token', token);
         localStorage.setItem('@Mfe:user', JSON.stringify(user));
-    
+        onSignIn();
         api.defaults.headers.authorization = `Bearer ${token}`;
       } catch (error) {
-        console.log(error.message);
+        setSnackBar(
+          {message:`
+          Erro na autenticação
+          Ocorreu um erro ao fazer login,
+          cheque as credenciais`,
+          open:true
+        })
       }
-  }, [onSignIn]);
+    }, [onSignIn]);
 
   return (
     <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
+      <div className={styles.paper}>
+        <Avatar className={styles.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
         <form
-          onSubmit={(e) => e.preventDefault()}
-          className={classes.form}
+          onSubmit={handleSubmit}
+          className={styles.form}
           noValidate
         >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            onChange={(event) => setInputEmail(event.target.value)}
-            autoFocus
+          <Input 
+          id='email' 
+          label="Email Address " 
+          name="email" 
+          type="email"
+          autoComplete="Email Address "
+          {...inputEmail}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            onChange={(event) => setinputPassword(event.target.value)}
-            autoComplete="current-password"
+          <Input 
+          id='password' 
+          label="Password" 
+          type="password"
+          name="password" 
+          autoComplete="Password " 
+          {...inputPassword}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -136,15 +172,15 @@ export default function SignIn({ onSignIn }: any) {
             type="submit"
             fullWidth
             variant="contained"
+            disabled={disabled}
             color="primary"
-            className={classes.submit}
-            // onClick={onSignIn}
+            className={styles.submit}
             onClick={() => signIn(user)}
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item>
+          <Grid container className={styles.typography}>
+            <Grid item >
               <Link to="/auth/signup">{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
@@ -153,6 +189,16 @@ export default function SignIn({ onSignIn }: any) {
       <Box mt={8}>
         <Copyright />
       </Box>
+      <Snackbar 
+        message={snackBar.message}
+        open={snackBar.open}
+        onClose={() => setSnackBar({open:false})}
+        autoHideDuration={3000}
+        ContentProps={{
+          "aria-describedby": "message-id",
+          className: styles.snackbar
+        }}
+      />
     </Container>
   );
 }

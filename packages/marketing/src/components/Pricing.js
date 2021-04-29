@@ -13,18 +13,7 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { Link as RouterLink } from 'react-router-dom';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
@@ -244,9 +233,9 @@ export default function Pricing() {
             </Grid>
           ))}
         </Grid>
-        <Box mt={5}>
+        {/* <Box mt={5}>
           <Copyright />
-        </Box>
+        </Box> */}
       </Container>
       {/* End footer */}
     </React.Fragment>

@@ -1,0 +1,10 @@
+.container{
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  padding: 30px 0;
+  border-bottom: 5px solid var(--white);
+  background-color: #f5f5f5;
+}

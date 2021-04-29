@@ -146,7 +146,7 @@ export default function Album() {
         </Container>
       </main>
       {/* Footer */}
-      <footer className={classes.footer}>
+      {/* <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>
@@ -159,7 +159,7 @@ export default function Album() {
           Something here to give the footer a purpose!
         </Typography>
         <Copyright />
-      </footer>
+      </footer> */}
       {/* End footer */}
     </React.Fragment>
   );

@@ -1,14 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
+import { FiUser} from 'react-icons/fi';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link as RouterLink } from 'react-router-dom';
-import { Context } from '../ContextApi/AuthContext';
-
+import { useTransaction } from '../hooks/useTransaction';
+import styles from './Header/header.module.css';
+import SubMenu from './Header/Submenu';
 const useStyles = makeStyles((theme) => ({
   '@global': {
+    body: {
+      margin: '0',
+      padding: '0',
+    },
     ul: {
       margin: 0,
       padding: 0,
@@ -30,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
   },
   heroContent: {
     padding: theme.spacing(8, 0, 6),
+  },
+  login:{
+    display: 'flex',
+    alignItems: 'baseline',
+    text:{
+      marginRight: theme.spacing(2),
+    }
   },
   cardHeader: {
     backgroundColor:
@@ -55,22 +68,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header() {
+const Header = () =>{
   const classes = useStyles();
-  const {authenticated, handleLogout } = useContext(Context);
-  // const [isSigned, setIsSigned] = useState(true);
-  
-  // const signOut = () => {
-  //   localStorage.removeItem('@Mfe:token');
-  //   localStorage.removeItem('@Mfe:user');
-  //   setIsSigned(false);
-  // };
-
-  // useEffect(() => {
-  //   // setIsSigned(true);
-  //   console.log(authenticated);
-  // }, [])
-  console.log(authenticated);
+  const {authenticated, user } = useTransaction();
+  console.log(user);
   return (
     <React.Fragment>
       <AppBar
@@ -80,7 +81,8 @@ export default function Header() {
         className={classes.appBar}
       >
         <Toolbar className={classes.toolbar}>
-          <Typography
+          <div className={styles.navlink}>
+          <Typography className={styles.link}
             variant="h6"
             color="inherit"
             noWrap
@@ -90,16 +92,28 @@ export default function Header() {
             App
           </Typography>
           {authenticated && (
-            <Typography 
+            <>
+            <Typography  className={styles.link}
               variant="h6"
               color="inherit"
               noWrap
               component={RouterLink}
               to="/dashboard"
             >
-              dashboard 
+              Dashboard 
             </Typography>
+            <Typography  className={styles.link}
+              variant="h6"
+              color="inherit"
+              noWrap
+              component={RouterLink}
+              to="/dashboard"
+            >
+              Home 
+            </Typography>
+            </>
           )}
+          </div>
           {!authenticated ? (
             <Button
             color="primary"
@@ -110,20 +124,25 @@ export default function Header() {
            > Login
              </Button>
           ) : (
-            <Button
-            color="primary"
-            variant="outlined"
-            className={classes.link}
-            component={RouterLink}
-            to='/auth/signin'
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
+            <div className={styles.container}>
+           <Typography className={styles.content}>
+             <span className={styles.avatar}>
+              {user?.avatar_url ? (
+                <img src={user?.avatar_url} alt="avatar"/>
+              ):(
+                 <FiUser className={styles.fiuser} size={20}/>
+              )}
+              <strong className={styles.users}>{user?.name ?? ' Bem vindo!'}</strong>
+             </span>
+           </Typography>
+            <SubMenu /> 
+          </div>
           )
          }
         </Toolbar>
+        
       </AppBar>
     </React.Fragment>
   );
 }
+export default Header;

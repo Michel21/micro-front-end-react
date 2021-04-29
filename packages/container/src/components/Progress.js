@@ -7,9 +7,12 @@ const useStyles = makeStyles((theme) => {
     bar: {
       width: '100%',
       '& > * + *': {
-        marginTop: theme.spacing(2)
+        marginTop: theme.spacing(2),
       }
-    }
+    },
+    loading:{
+      height: '100vh',
+    },
   })
 })
 
@@ -18,6 +21,7 @@ export default () =>{
   return (
     <div className={classes.bar}>
       <LinearProgress />
+      <div className={classes.loading}></div>
     </div>
   )
 }
