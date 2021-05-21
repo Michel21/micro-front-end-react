@@ -9,6 +9,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTransaction } from '../hooks/useTransaction';
 import styles from './Header/header.module.css';
 import SubMenu from './Header/Submenu';
+import logo from '../../assets/logo.svg';
+
 const useStyles = makeStyles((theme) => ({
   '@global': {
     body: {
@@ -25,14 +27,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    // borderBottom: `1px solid ${theme.palette.divider}`,
   },
   toolbar: {
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    background: 'rgb(32, 32, 36)',
+    color: 'rgb(115, 115, 128)',
   },
   link: {
     margin: theme.spacing(1, 1.5),
+    fontSize: '1rem'
   },
   heroContent: {
     padding: theme.spacing(8, 0, 6),
@@ -71,7 +76,6 @@ const useStyles = makeStyles((theme) => ({
 const Header = () =>{
   const classes = useStyles();
   const {authenticated, user } = useTransaction();
-  console.log(user);
   return (
     <React.Fragment>
       <AppBar
@@ -82,20 +86,21 @@ const Header = () =>{
       >
         <Toolbar className={classes.toolbar}>
           <div className={styles.navlink}>
-          <Typography className={styles.link}
+          <Typography 
             variant="h6"
             color="inherit"
             noWrap
             component={RouterLink}
             to="/"
           >
-            App
+            <img className={styles.logo} src={logo} alt="appsoftware" />
           </Typography>
           {authenticated && (
             <>
             <Typography  className={styles.link}
               variant="h6"
               color="inherit"
+              size={12}
               noWrap
               component={RouterLink}
               to="/dashboard"
@@ -125,22 +130,23 @@ const Header = () =>{
              </Button>
           ) : (
             <div className={styles.container}>
-           <Typography className={styles.content}>
+           <section className={styles.content}>
              <span className={styles.avatar}>
               {user?.avatar_url ? (
                 <img src={user?.avatar_url} alt="avatar"/>
               ):(
                  <FiUser className={styles.fiuser} size={20}/>
               )}
-              <strong className={styles.users}>{user?.name ?? ' Bem vindo!'}</strong>
+              <div className={styles.submenuFlex}>
+               <strong className={styles.users}>{user?.name ?? ' Bem vindo!'}</strong>
+               <small className={styles.users}>{user?.email ?? ''}</small>
+              </div>
              </span>
-           </Typography>
+           </section>
             <SubMenu /> 
           </div>
-          )
-         }
+          )}
         </Toolbar>
-        
       </AppBar>
     </React.Fragment>
   );

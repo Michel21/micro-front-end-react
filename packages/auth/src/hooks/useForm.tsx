@@ -33,7 +33,7 @@ const [error, setError] = React.useState('');
 function validate(value: any) {
   if (type === false) return true;
   if (value.length === 0) {
-    setError('Preencha um valor');
+    setError('Campo Obrigatório!');
     return false;
   } else if (types[type] && !types[type].regex.test(value)) {
     setError(types[type].message);

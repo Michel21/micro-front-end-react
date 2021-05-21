@@ -37,7 +37,7 @@ module.exports = {
           'css-loader',
         ],
         exclude: /\.module\.css$/
-      }
+      },
     ],
   },
 };

@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MaterialLink from '@material-ui/core/Link';
 import { Link } from 'react-router-dom';
+import img from '../../assets/fundo.jpg';
 
 function Copyright() {
   return (
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   heroContent: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
+    color: '#FFFFFF'
   },
   heroButtons: {
     marginTop: theme.spacing(4),
@@ -70,13 +72,20 @@ export default function Album() {
     <React.Fragment>
       <main>
         {/* Hero unit */}
-        <div className={classes.heroContent}>
+        <div className={classes.heroContent} style={
+          {
+           backgroundImage:`url(${img})`,
+           backgroundRepeat:'no-repeat',
+           backgroundPosition:'bottom',
+           backgroundSize:'cover'
+          }
+          }>
           <Container maxWidth="sm">
             <Typography
               component="h1"
               variant="h2"
               align="center"
-              color="textPrimary"
+              color="inherit"
               gutterBottom
             >
               Home Page
@@ -84,7 +93,7 @@ export default function Album() {
             <Typography
               variant="h5"
               align="center"
-              color="textSecondary"
+              color="inherit"
               paragraph
             >
               Something short and leading about the collection below—its
