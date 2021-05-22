@@ -22,9 +22,17 @@
   margin-right: 20px !important;
   font-size: 1rem !important;
   transition: color 0.2s ease 0s, border-color 0.2s ease 0s;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid transparent;
+  padding: 0px 8px;
 }
+
 .link:hover{
+  border-color: rgb(130, 87, 230) !important;
   color: rgb(225, 225, 230);
+  border-radius: 3px 3px 0 0;
 }
 .avatar{
   display: flex;
