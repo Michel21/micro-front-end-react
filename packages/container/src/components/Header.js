@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     background: 'rgb(32, 32, 36)',
     color: 'rgb(115, 115, 128)',
+    borderTop: '5px solid rgb(32, 32, 36)'
   },
   link: {
     margin: theme.spacing(1, 1.5),
